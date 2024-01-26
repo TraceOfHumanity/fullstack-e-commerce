@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import InputComponent from "@/components/FormElements/InputComponent";
 import SelectComponent from "@/components/FormElements/SelectComponent";
+import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/Utils";
 
 const initialFormData = {
@@ -16,6 +17,27 @@ const initialFormData = {
 const Register = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [isRegistered, setIsRegistered] = useState(false);
+
+  // console.log(formData);
+
+  function isFormValid() {
+    return formData &&
+      formData.name &&
+      formData.name.trim() !== "" &&
+      formData.email &&
+      formData.email.trim() !== "" &&
+      formData.password &&
+      formData.password.trim() !== ""
+      ? true
+      : false;
+  }
+
+  console.log(isFormValid());
+
+  async function handleRegisterOnSubmit() {
+    const data = await registerNewUser(formData);
+    console.log("data", data);
+  }
 
   return (
     <div className="bg-white relative">
@@ -30,9 +52,7 @@ const Register = () => {
               </p>
               {isRegistered ? (
                 <button
-                  className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
-                              text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
-                              "
+                  className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide"
                   // onClick={()=>router.push('/login')}
                 >
                   Login
@@ -69,7 +89,11 @@ const Register = () => {
                       />
                     ) : null
                   )}
-                  <button className="disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide">
+                  <button
+                    className="disabled:opacity-10 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide"
+                    disabled={!isFormValid()}
+                    onClick={() => handleRegisterOnSubmit()}
+                  >
                     Register
                   </button>
                 </div>
