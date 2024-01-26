@@ -13,13 +13,19 @@ const user = {
   role: "admin",
 };
 
-function NavItems() {
+function NavItems({ isModalView = false }) {
   return (
     <div
-      className="items-center justify-between w-full md:flex md:w-auto"
+      className={`items-center justify-between w-full md:flex md:w-auto ${
+        isModalView ? "" : "hidden"
+      }`}
       id="nav-items"
     >
-      <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ">
+      <ul
+        className={`flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${
+          isModalView ? "border-none" : "border border-gray-100"
+        }`}
+      >
         {isAdminView
           ? adminNavOptions.map((item) => (
               <li
@@ -135,10 +141,21 @@ export const Navbar = () => {
               </svg>
             </button>
           </div>
-          <NavItems />
+          <NavItems isMadal={false} />
         </div>
       </nav>
-      <CommonModal show={showNavModal} setShow={setShowNavModal}></CommonModal>
+      <CommonModal
+        showModalTitle={false}
+        mainContent={
+          <NavItems
+            // router={router}
+            isModalView={true}
+            // isAdminView={isAdminView}
+          />
+        }
+        show={showNavModal}
+        setShow={setShowNavModal}
+      ></CommonModal>
     </>
   );
 };
